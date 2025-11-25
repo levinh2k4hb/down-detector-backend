@@ -4,6 +4,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AdminModule } from './admin/admin.module';
 import { WebsiteModule } from './website/website.module';
+import { MonitoringModule } from './monitoring/monitoring.module';
+import { PushNotificationModule } from './push-notification/push-notification.module';
 import * as dotenv from 'dotenv';
 
 dotenv.config();
@@ -23,6 +25,8 @@ dotenv.config();
     }),
     AdminModule,
     WebsiteModule,
+    MonitoringModule,
+    PushNotificationModule,
   ],
   controllers: [AppController],
   providers: [AppService],
