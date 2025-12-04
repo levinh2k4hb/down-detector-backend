@@ -1,9 +1,13 @@
 import { Controller, Post, Param, Get, Query, Body } from '@nestjs/common';
 import { MonitoringService } from './monitoring.service';
+import { MonitoringSchedulerService } from './monitoring-scheduler.service';
 
 @Controller('monitoring')
 export class MonitoringController {
-  constructor(private readonly monitoringService: MonitoringService) {}
+  constructor(
+    private readonly monitoringService: MonitoringService,
+    private readonly schedulerService: MonitoringSchedulerService,
+  ) {}
 
   @Post('check/:id')
   async checkWebsite(@Param('id') id: string) {
@@ -54,5 +58,29 @@ export class MonitoringController {
     } catch (error) {
       return { success: false, error: error.message };
     }
+  }
+
+  // Scheduler management endpoints
+  @Get('scheduler/status')
+  getSchedulerStatus() {
+    return this.schedulerService.getSchedulerStatus();
+  }
+
+  @Post('scheduler/pause')
+  pauseScheduler() {
+    this.schedulerService.pauseScheduler();
+    return { 
+      message: 'Scheduler paused', 
+      status: this.schedulerService.getSchedulerStatus() 
+    };
+  }
+
+  @Post('scheduler/resume')9
+  resumeScheduler() {
+    this.schedulerService.resumeScheduler();
+    return { 
+      message: 'Scheduler resumed', 
+      status: this.schedulerService.getSchedulerStatus() 
+    };
   }
 }
