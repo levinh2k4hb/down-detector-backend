@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, In } from 'typeorm';
 import * as webpush from 'web-push';
 import { PushSubscription } from './push-subscription.entity';
 import { Admin } from '../admin/admin.entity';
@@ -47,7 +47,7 @@ export class PushNotificationService {
     const adminIds = admins.map(admin => admin.id);
     const subscriptions = await this.pushSubscriptionRepository.find({
       where: {
-        adminId: adminIds as any,
+        adminId: In(adminIds),
         isActive: true,
       },
       relations: ['admin'],
